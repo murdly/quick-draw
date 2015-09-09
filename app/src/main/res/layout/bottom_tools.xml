@@ -7,52 +7,44 @@
     android:orientation="horizontal">
 
     <ImageButton
-        android:id="@+id/color_chosen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/color"
-        android:padding="8dp"
-        android:background="@android:color/transparent" />
-
-    <ImageButton
         android:id="@+id/color1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/color"
-        android:tint="@android:color/black" />
+        android:tint="@color/color1" />
 
     <ImageButton
         android:id="@+id/color2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/color"
-        android:tint="@android:color/white" />
+        android:tint="@color/color2" />
 
     <ImageButton
         android:id="@+id/color3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/color"
-        android:tint="@android:color/holo_red_dark" />
+        android:tint="@color/color3" />
 
     <ImageButton
         android:id="@+id/color4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/color"
-        android:tint="@android:color/holo_green_dark" />
+        android:tint="@color/color4" />
 
     <ImageButton
         android:id="@+id/color5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/color"
-        android:tint="@android:color/holo_blue_dark" />
+        android:tint="@color/color5" />
 
     <ImageButton
         android:id="@+id/color6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/color"
-        android:tint="@android:color/holo_orange_dark" />
+        android:tint="@color/color6" />
 </LinearLayout>

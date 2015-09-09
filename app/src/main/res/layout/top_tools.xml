@@ -42,17 +42,5 @@
         android:tint="@android:color/white" />
 
 
-    <ImageButton
-        android:id="@+id/open"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/open"
-        android:tint="@android:color/holo_orange_light" />
 
-    <ImageButton
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/save"
-        android:tint="@android:color/holo_purple" />
 </LinearLayout>
