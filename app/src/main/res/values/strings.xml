@@ -3,4 +3,11 @@
     <string name="action_open_file">Otwórz</string>
     <string name="action_save_file">Zapisz</string>
     <string name="title">Tytuł</string>
+
+    <string name="color1">#000000</string>
+    <string name="color2">#FFFFFF</string>
+    <string name="color3">#FF0000</string>
+    <string name="color4">#03A9F4</string>
+    <string name="color5">#FFFF00</string>
+    <string name="color6">#007C00</string>
 </resources>

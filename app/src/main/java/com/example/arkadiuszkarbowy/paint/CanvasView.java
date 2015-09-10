@@ -3,8 +3,11 @@ package com.example.arkadiuszkarbowy.paint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +18,9 @@ import android.view.View;
 public class CanvasView extends View {
 
     private static final int DEFAULT_COLOR = 0xFF000000;
+    private static final int ERASER_COLOR = 0xFFFFFFFF;
+    private static final int ERASER_STROKE = 80;
+
     private Path mPath;
     private Paint mDrawPaint, mCanvasPaint;
     private int mPaintColor;
@@ -42,7 +48,6 @@ public class CanvasView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         mCanvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mCanvasBitmap);
     }
@@ -74,5 +79,27 @@ public class CanvasView extends View {
         }
         invalidate();
         return true;
+    }
+
+    public void setPaintColor(int color) {
+        this.mPaintColor = color;
+        invalidate();
+        mDrawPaint.setColor(mPaintColor);
+    }
+
+    public void erase(boolean isErase) {
+        if (isErase) {
+            setPaintColor(ERASER_COLOR);
+            mDrawPaint.setStrokeWidth(ERASER_STROKE);
+        } else {
+            setPaintColor(mPaintColor);
+            mDrawPaint.setStrokeWidth(20);
+        }
+
+    }
+
+    public void clear() {
+        mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+        invalidate();
     }
 }

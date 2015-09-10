@@ -4,14 +4,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:clickable="false">
 
     <ImageButton
         android:id="@+id/file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/file"
-        android:tint="@android:color/white" />
+        android:tint="@android:color/white"/>
 
     <ImageButton
         android:id="@+id/pencil"
