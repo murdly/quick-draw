@@ -3,14 +3,16 @@ package com.example.arkadiuszkarbowy.paint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Created by arkadiuszkarbowy on 09/09/15.
@@ -18,14 +20,17 @@ import android.view.View;
 public class CanvasView extends View {
 
     private static final int DEFAULT_COLOR = 0xFF000000;
-    private static final int ERASER_COLOR = 0xFFFFFFFF;
-    private static final int ERASER_STROKE = 80;
+    public static final int ERASER_COLOR = 0xFFFFFFFF;
+    public static final int ERASER_STROKE_WIDTH = 80;
+    public static final int PENCIL_STROKE_WIDTH = 10;
+    public static final int BRUSH_STROKE_WIDTH = 40;
 
     private Path mPath;
     private Paint mDrawPaint, mCanvasPaint;
     private int mPaintColor;
     private Canvas mCanvas;
     private Bitmap mCanvasBitmap;
+    boolean mFillMode = false;
 
     public CanvasView(Context context, AttributeSet attr) {
         super(context, attr);
@@ -36,8 +41,9 @@ public class CanvasView extends View {
     private void setUp() {
         mPath = new Path();
         mCanvasPaint = new Paint(Paint.DITHER_FLAG);
+        mPaintColor = DEFAULT_COLOR;
         mDrawPaint = new Paint();
-        mDrawPaint.setColor(DEFAULT_COLOR);
+        mDrawPaint.setColor(mPaintColor);
         mDrawPaint.setStrokeWidth(20);
         mDrawPaint.setStrokeJoin(Paint.Join.ROUND);
         mDrawPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -59,16 +65,38 @@ public class CanvasView extends View {
         canvas.drawPath(mPath, mDrawPaint);
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
 
-        switch (event.getAction()) {
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+
+        if (mFillMode)
+            fillEvent(event.getAction(), x, y);
+        else
+            drawingEvents(event.getAction(), x, y);
+
+        invalidate();
+        return true;
+    }
+
+    private void fillEvent(int action, int x, int y) {
+        if (action == MotionEvent.ACTION_DOWN) {
+            int targetColor = mCanvasBitmap.getPixel(x, y);
+            if (mPaintColor != targetColor)
+                floodFill(mCanvasBitmap, new Point(x, y), targetColor, mPaintColor);
+        }
+    }
+
+    private boolean drawingEvents(int action, int x, int y) {
+        switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mPath.moveTo(event.getX(), event.getY());
+                mPath.moveTo(x, y);
                 break;
             case MotionEvent.ACTION_MOVE:
-                mPath.lineTo(event.getX(), event.getY());
+                mPath.lineTo(x, y);
                 break;
             case MotionEvent.ACTION_UP:
                 mCanvas.drawPath(mPath, mDrawPaint);
@@ -77,7 +105,6 @@ public class CanvasView extends View {
             default:
                 return false;
         }
-        invalidate();
         return true;
     }
 
@@ -87,19 +114,49 @@ public class CanvasView extends View {
         mDrawPaint.setColor(mPaintColor);
     }
 
-    public void erase(boolean isErase) {
-        if (isErase) {
-            setPaintColor(ERASER_COLOR);
-            mDrawPaint.setStrokeWidth(ERASER_STROKE);
-        } else {
-            setPaintColor(mPaintColor);
-            mDrawPaint.setStrokeWidth(20);
-        }
-
+    public void setStrokeWidth(int width) {
+        mDrawPaint.setStrokeWidth(width);
     }
 
     public void clear() {
         mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
         invalidate();
+    }
+
+    public void fill(boolean on) {
+        mFillMode = on;
+    }
+
+    //stackofflow
+    private void floodFill(Bitmap bmp, Point pt, int targetColor, int replacementColor) {
+        Queue<Point> q = new LinkedList<Point>();
+        q.add(pt);
+        while (q.size() > 0) {
+            Point n = q.poll();
+            if (bmp.getPixel(n.x, n.y) != targetColor)
+                continue;
+
+            Point w = n, e = new Point(n.x + 1, n.y);
+            while ((w.x > 0) && (bmp.getPixel(w.x, w.y) == targetColor)) {
+                bmp.setPixel(w.x, w.y, replacementColor);
+                if ((w.y > 0) && (bmp.getPixel(w.x, w.y - 1) == targetColor))
+                    q.add(new Point(w.x, w.y - 1));
+                if ((w.y < bmp.getHeight() - 1)
+                        && (bmp.getPixel(w.x, w.y + 1) == targetColor))
+                    q.add(new Point(w.x, w.y + 1));
+                w.x--;
+            }
+            while ((e.x < bmp.getWidth() - 1)
+                    && (bmp.getPixel(e.x, e.y) == targetColor)) {
+                bmp.setPixel(e.x, e.y, replacementColor);
+
+                if ((e.y > 0) && (bmp.getPixel(e.x, e.y - 1) == targetColor))
+                    q.add(new Point(e.x, e.y - 1));
+                if ((e.y < bmp.getHeight() - 1)
+                        && (bmp.getPixel(e.x, e.y + 1) == targetColor))
+                    q.add(new Point(e.x, e.y + 1));
+                e.x++;
+            }
+        }
     }
 }

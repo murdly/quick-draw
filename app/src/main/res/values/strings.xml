@@ -4,6 +4,12 @@
     <string name="action_save_file">Zapisz</string>
     <string name="title">Tytuł</string>
 
+    <string name="clear">Wyczyść</string>
+    <string name="pencil">Ołówek</string>
+    <string name="brush">Pędzel</string>
+    <string name="fill">Wypełniacz</string>
+    <string name="eraser">Gumka</string>
+
     <string name="color1">#000000</string>
     <string name="color2">#FFFFFF</string>
     <string name="color3">#FF0000</string>

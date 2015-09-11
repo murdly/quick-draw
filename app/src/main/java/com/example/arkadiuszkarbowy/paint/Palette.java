@@ -1,12 +1,10 @@
 package com.example.arkadiuszkarbowy.paint;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -28,22 +26,24 @@ public class Palette extends View {
         init();
     }
 
+    public int getPaintColor() {
+        return (int) mCurrentColor.getTag();
+    }
 
     public interface OnColorChosenListener {
         void onColorChosen(int color);
     }
 
-    ImageButton.OnClickListener mOnColorChosenListener = new ImageButton.OnClickListener() {
+    private ImageButton.OnClickListener mOnColorChosenListener = new ImageButton.OnClickListener() {
         @Override
-        public void onClick(View colorBtn) {
-            if (colorBtn != mCurrentColor) {
+        public void onClick(View newColor) {
+            if (newColor != mCurrentColor) {
                 setIndicators(mCurrentColor, GONE);
-                setIndicators(colorBtn, VISIBLE);
-                mCurrentColor = (ImageButton) colorBtn;
+                setIndicators(newColor, VISIBLE);
+                mCurrentColor = (ImageButton) newColor;
 
-                int color = (int) colorBtn.getTag();
+                int color = (int) newColor.getTag();
                 mCallback.onColorChosen(color);
-
             }
         }
     };
@@ -52,6 +52,15 @@ public class Palette extends View {
         ViewGroup container = (ViewGroup) color.getParent();
         View indicator = container.getChildAt(1);
         indicator.setVisibility(value);
+    }
+
+
+    public void setAvailable(boolean available){
+        for(int i = 0; i < mPalette.getChildCount(); i++){
+            ViewGroup container = (ViewGroup) mPalette.getChildAt(i);
+            View btn = container.getChildAt(0);
+            btn.setEnabled(available);
+        }
     }
 
     private void init() {
@@ -65,22 +74,24 @@ public class Palette extends View {
             btn.setTag(c);
             btn.setOnClickListener(mOnColorChosenListener);
 
-            LinearLayout container = createContainer();
+            LinearLayout item = createContainer();
             View indicator = createIndicator();
 
-            container.addView(btn);
-            container.addView(indicator);
+            item.addView(btn);
+            item.addView(indicator);
 
-            mPalette.addView(container);
+            mPalette.addView(item);
         }
 
         mCurrentColor = (ImageButton) ((LinearLayout) mPalette.getChildAt(0)).getChildAt(0);
+        setIndicators(mCurrentColor, VISIBLE);
     }
 
     private LinearLayout createContainer() {
         LinearLayout container = new LinearLayout(mContext);
         container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         container.setOrientation(LinearLayout.VERTICAL);
+
         return container;
     }
 
@@ -93,6 +104,7 @@ public class Palette extends View {
         indicator.setVisibility(GONE);
         indicator.setLayoutParams(params);
         indicator.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+
         return indicator;
     }
 }

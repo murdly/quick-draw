@@ -4,20 +4,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="horizontal"
-    android:clickable="false">
+    android:clickable="false"
+    android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/file"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/file"
-        android:tint="@android:color/white"/>
 
     <ImageButton
         android:id="@+id/pencil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/pencil"
         android:src="@drawable/pencil"
         android:tint="@android:color/white" />
 
@@ -25,6 +20,7 @@
         android:id="@+id/brush"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/brush"
         android:src="@drawable/brush"
         android:tint="@android:color/white" />
 
@@ -32,6 +28,7 @@
         android:id="@+id/fill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/fill"
         android:src="@drawable/fill"
         android:tint="@android:color/white" />
 
@@ -39,9 +36,15 @@
         android:id="@+id/eraser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/eraser"
         android:src="@drawable/eraser"
         android:tint="@android:color/white" />
 
-
+    <ImageButton
+        android:id="@+id/clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/file"
+        android:tint="@android:color/white" />
 
 </LinearLayout>

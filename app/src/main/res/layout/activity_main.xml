@@ -31,7 +31,7 @@
         <com.example.arkadiuszkarbowy.paint.CanvasView
             android:id="@+id/canvas"
             android:layout_width="fill_parent"
-            android:layout_height="350dp"
+            android:layout_height="370dp"
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:background="@android:color/white" />
