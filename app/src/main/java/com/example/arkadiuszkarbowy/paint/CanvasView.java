@@ -3,6 +3,7 @@ package com.example.arkadiuszkarbowy.paint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -22,8 +23,8 @@ public class CanvasView extends View {
     private static final int DEFAULT_COLOR = 0xFF000000;
     public static final int ERASER_COLOR = 0xFFFFFFFF;
     public static final int ERASER_STROKE_WIDTH = 80;
-    public static final int PENCIL_STROKE_WIDTH = 10;
-    public static final int BRUSH_STROKE_WIDTH = 40;
+    public static final int PENCIL_STROKE_WIDTH = 2;
+    public static final int BRUSH_STROKE_WIDTH = 30;
 
     private Path mPath;
     private Paint mDrawPaint, mCanvasPaint;
@@ -44,7 +45,6 @@ public class CanvasView extends View {
         mPaintColor = DEFAULT_COLOR;
         mDrawPaint = new Paint();
         mDrawPaint.setColor(mPaintColor);
-        mDrawPaint.setStrokeWidth(20);
         mDrawPaint.setStrokeJoin(Paint.Join.ROUND);
         mDrawPaint.setStrokeCap(Paint.Cap.ROUND);
         mDrawPaint.setStyle(Paint.Style.STROKE);
@@ -65,6 +65,11 @@ public class CanvasView extends View {
         canvas.drawPath(mPath, mDrawPaint);
     }
 
+    public void onLoadedImageFromStorage(Bitmap bitmap) {
+        mCanvasBitmap = bitmap;
+        mCanvas = new Canvas(mCanvasBitmap);
+        invalidate();
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -119,7 +124,9 @@ public class CanvasView extends View {
     }
 
     public void clear() {
-        mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        mCanvas.drawRect(0f, 0f, mCanvasBitmap.getWidth(), mCanvasBitmap.getHeight(), paint);
         invalidate();
     }
 
@@ -127,7 +134,7 @@ public class CanvasView extends View {
         mFillMode = on;
     }
 
-    //stackofflow
+    // stackoverflow - bardzo wolne i niedokladne
     private void floodFill(Bitmap bmp, Point pt, int targetColor, int replacementColor) {
         Queue<Point> q = new LinkedList<Point>();
         q.add(pt);

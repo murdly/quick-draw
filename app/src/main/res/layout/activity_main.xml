@@ -11,12 +11,14 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:elevation="4dp"
-        android:minHeight="?android:attr/actionBarSize">
+        android:maxHeight="?android:attr/actionBarSize">
 
         <EditText
             android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:digits="@string/allowed_characters"
+            android:singleLine="true" />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
@@ -25,22 +27,28 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <include layout="@layout/top_tools" />
+        <include layout="@layout/top_tools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0" />
 
 
         <com.example.arkadiuszkarbowy.paint.CanvasView
             android:id="@+id/canvas"
             android:layout_width="fill_parent"
-            android:layout_height="370dp"
+            android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:background="@android:color/white" />
+            android:background="@android:color/white"
+            android:layout_weight="1" />
 
         <LinearLayout
             android:id="@+id/bottom_tools"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            android:layout_weight="0" />
     </LinearLayout>
 </LinearLayout>

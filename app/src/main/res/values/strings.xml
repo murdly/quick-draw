@@ -2,7 +2,7 @@
     <string name="app_name">Paint</string>
     <string name="action_open_file">Otwórz</string>
     <string name="action_save_file">Zapisz</string>
-    <string name="title">Tytuł</string>
+    <string name="title">tytuł</string>
 
     <string name="clear">Wyczyść</string>
     <string name="pencil">Ołówek</string>
@@ -16,4 +16,10 @@
     <string name="color4">#03A9F4</string>
     <string name="color5">#FFFF00</string>
     <string name="color6">#007C00</string>
+
+    <string name="allowed_characters">0123456789qwertzuiopasdfghjklyxcvbnm_-ążźćóęśł</string>
+    <string name="msg_filename">Niepowodzenie. Plik o podanej nazwie istnieje. </string>
+    <string name="msg_saved">Zapisano plik</string>
+    <string name="msg_choose">Wybierz obraz</string>
+    <string name="msg_manager">Potrzebujesz menadżera plików</string>
 </resources>

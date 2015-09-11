@@ -68,7 +68,8 @@ public class Palette extends View {
 
         for (int c : colors) {
             ImageButton btn = new ImageButton(mContext);
-            btn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            btn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
             btn.setImageResource(R.drawable.color);
             btn.setColorFilter(c);
             btn.setTag(c);
@@ -89,7 +90,8 @@ public class Palette extends View {
 
     private LinearLayout createContainer() {
         LinearLayout container = new LinearLayout(mContext);
-        container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         container.setOrientation(LinearLayout.VERTICAL);
 
         return container;
@@ -97,9 +99,13 @@ public class Palette extends View {
 
     private View createIndicator() {
         View indicator = new View(mContext);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, getResources().getDisplayMetrics());
-        params.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+        LinearLayout.LayoutParams params =
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3,
+                getResources().getDisplayMetrics());
+        params.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25,
+                getResources().getDisplayMetrics());
         params.gravity = Gravity.CENTER;
         indicator.setVisibility(GONE);
         indicator.setLayoutParams(params);

@@ -10,13 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:elevation="4dp"
         android:minHeight="?android:attr/actionBarSize">
 
         <EditText
             android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:digits="@string/allowed_characters"
+            android:singleLine="true" />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
@@ -25,12 +26,16 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <include layout="@layout/top_tools"/>
+        <include layout="@layout/top_tools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"/>
 
         <com.example.arkadiuszkarbowy.paint.CanvasView
             android:id="@+id/canvas"
-            android:layout_width="450dp"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:background="@android:color/white" />
@@ -38,6 +43,7 @@
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:layout_gravity="center">
 
             <LinearLayout
