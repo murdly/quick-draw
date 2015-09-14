@@ -6,12 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +21,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class MainActivity extends AppCompatActivity implements Palette.OnColorChosenListener {
+public class MainActivity extends AppCompatActivity implements Palette.OnColorChosenListener, Toolkit.OnSetToolListener {
     private static final int SELECT_FILE = 0;
     private static final String STORAGE_TYPE = "resource/folder";
     private static final String IMAGE_STORAGE_PATH = "/paint/";
@@ -31,8 +29,8 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
 
     private EditText mTitle;
     private CanvasView mCanvasView;
-    private ImageButton mCurrentTool;
     private Palette mPalette;
+    private Toolkit mToolkit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +40,13 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
         setUpToolbar();
         initTools();
         createStorageFolder();
+
+//        if(savedInstanceState == null) {
+//            mPencil.performClick();
+//        }
     }
 
-    private void setUpToolbar(){
+    private void setUpToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_main);
         setSupportActionBar(toolbar);
@@ -56,86 +58,72 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
         mTitle.setSelection(mTitle.getText().length());
     }
 
-    private void initTools(){
+    private void initTools() {
         mCanvasView = (CanvasView) findViewById(R.id.canvas);
         LinearLayout container = (LinearLayout) findViewById(R.id.bottom_tools);
         mPalette = new Palette(this, container, this);
 
-        ImageButton mPencil = (ImageButton) findViewById(R.id.pencil);
-        mPencil.setOnClickListener(mOnPencilListener);
-        findViewById(R.id.brush).setOnClickListener(mOnBrushListener);
-        findViewById(R.id.fill).setOnClickListener(mOnFillListener);
-        findViewById(R.id.eraser).setOnClickListener(mOnEraseListener);
-        findViewById(R.id.clear).setOnClickListener(mOnClearListener);
+        mToolkit = new Toolkit(this, (LinearLayout) findViewById(R.id.toolkit), this);
+        mToolkit.init();
+    }
 
-        mPencil.performClick();
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        outState.putInt("id", mCurrentTool.getId());
+//        outState.putInt("idp", mPalette.getCurrentColorId());
+//
+//
+//        /*zapisac temp w pliku :> a potem nadpisac*/
+//        mCanvasView.setDrawingCacheEnabled(true);
+//        mCanvasView.buildDrawingCache();
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        mCanvasView.getDrawingCache().compress(Bitmap.CompressFormat.PNG, 100, stream);
+//        byte[] byteArray = stream.toByteArray();
+//        mCanvasView.setDrawingCacheEnabled(false);
+//
+//        outState.putByteArray("canv", byteArray);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+//        findViewById(savedInstanceState.getInt("id")).performClick();
+//        mPalette.setColorAsCurrent(savedInstanceState.getInt("idp"));
+//
+//        byte[] bitmapbytes = savedInstanceState.getByteArray("canv");
+//        Bitmap b = BitmapFactory.decodeByteArray(bitmapbytes, 0, bitmapbytes.length);
+//
+//        Bitmap drawableBitmap = b.copy(Bitmap.Config.ARGB_8888, true);
+//        mCanvasView.onReloadedBitmap(drawableBitmap);
+//        Log.d("onRestoreInstanceState", " " +  savedInstanceState.getInt("idp"));
     }
 
     private void createStorageFolder() {
         File folder = new File(Environment.getExternalStorageDirectory() + IMAGE_STORAGE_PATH);
-
-        if (!folder.exists()) {
+        if (!folder.exists())
             folder.mkdir();
-        }
-    }
-
-    private ImageButton.OnClickListener mOnPencilListener = new ImageButton.OnClickListener() {
-        @Override
-        public void onClick(View pencil) {
-            setTool(pencil, CanvasView.PENCIL_STROKE_WIDTH, false, false, true);
-        }
-    };
-
-    private ImageButton.OnClickListener mOnBrushListener = new ImageButton.OnClickListener() {
-        @Override
-        public void onClick(View brush) {
-            setTool(brush, CanvasView.BRUSH_STROKE_WIDTH, false, false, true);
-        }
-    };
-
-    private ImageButton.OnClickListener mOnFillListener = new ImageButton.OnClickListener() {
-        @Override
-        public void onClick(View fill) {
-            setTool(fill, -1, true, false, true);
-        }
-    };
-
-    private ImageButton.OnClickListener mOnEraseListener = new ImageButton.OnClickListener() {
-        @Override
-        public void onClick(View eraser) {
-            setTool(eraser, CanvasView.ERASER_STROKE_WIDTH, false, true, false);
-        }
-    };
-
-    private ImageButton.OnClickListener mOnClearListener = new ImageButton.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mCanvasView.clear();
-        }
-    };
-
-    private void setTool(View tool, int width, boolean fill, boolean eraser, boolean palette) {
-        if (mCurrentTool != tool) {
-            if (mCurrentTool != null) mCurrentTool.setColorFilter(null);
-            mCurrentTool = (ImageButton) tool;
-
-            if (!eraser) {
-                onColorChosen(mPalette.getPaintColor());
-            } else {
-                mCurrentTool.setColorFilter(getResources().getColor(R.color.colorAccent));
-                mCanvasView.setPaintColor(CanvasView.ERASER_COLOR);
-            }
-            mCanvasView.setStrokeWidth(width);
-            mCanvasView.fill(fill);
-
-            mPalette.setAvailable(palette);
-        }
     }
 
     @Override
-    public void onColorChosen(int color) {
-        mCurrentTool.setColorFilter(color);
-        mCanvasView.setPaintColor(color);
+    public void draw(boolean fillMode) {
+        Tool tool = mToolkit.getSelectedTool();
+        tool.setColor(mPalette.getPaintColor());
+        mCanvasView.setPaintColor(tool.getPaintColor());
+        mCanvasView.setStrokeWidth(tool.getStroke());
+        mCanvasView.fill(fillMode);
+    }
+
+    @Override
+    public void clear() {
+        mCanvasView.clear();
+    }
+
+    @Override
+    public void updateToolColor(int color) {
+        Tool current = mToolkit.getSelectedTool();
+        current.setColor(color);
+        mCanvasView.setPaintColor(current.getPaintColor());
     }
 
     @Override
@@ -181,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
         save(bitmap);
         mCanvasView.setDrawingCacheEnabled(false);
     }
-
 
     private void save(Bitmap bitmapImage) {
         String filename = mTitle.getText().toString();
@@ -229,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
     private void loadImageFromStorage(String path) {
         Bitmap loadedBitmap = BitmapFactory.decodeFile(path);
         Bitmap drawableBitmap = loadedBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        mCanvasView.onLoadedImageFromStorage(drawableBitmap);
+        mCanvasView.onReloadedBitmap(drawableBitmap);
     }
 
     private void setTitleFrom(String path) {

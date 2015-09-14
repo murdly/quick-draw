@@ -30,8 +30,27 @@ public class Palette extends View {
         return (int) mCurrentColor.getTag();
     }
 
+    public int getCurrentColorId(){
+        return mCurrentColor.getId();
+    }
+
+    public void setColorAsCurrent(int id){
+        ImageButton btn = findColorById(id);
+        if(btn != null) btn.performClick();
+
+    }
+
+    public ImageButton findColorById(int id){
+        for(int i = 0; i < mPalette.getChildCount(); i++){
+            ViewGroup container = (ViewGroup) mPalette.getChildAt(i);
+            View btn = container.getChildAt(0);
+            if(btn.getId() == id) return (ImageButton) btn;
+        }
+        return null;
+    }
+
     public interface OnColorChosenListener {
-        void onColorChosen(int color);
+        void updateToolColor(int color);
     }
 
     private ImageButton.OnClickListener mOnColorChosenListener = new ImageButton.OnClickListener() {
@@ -41,9 +60,8 @@ public class Palette extends View {
                 setIndicators(mCurrentColor, GONE);
                 setIndicators(newColor, VISIBLE);
                 mCurrentColor = (ImageButton) newColor;
-
                 int color = (int) newColor.getTag();
-                mCallback.onColorChosen(color);
+                mCallback.updateToolColor(color);
             }
         }
     };
@@ -72,6 +90,7 @@ public class Palette extends View {
                     ViewGroup.LayoutParams.WRAP_CONTENT));
             btn.setImageResource(R.drawable.color);
             btn.setColorFilter(c);
+            btn.setId(c);
             btn.setTag(c);
             btn.setOnClickListener(mOnColorChosenListener);
 
@@ -80,7 +99,6 @@ public class Palette extends View {
 
             item.addView(btn);
             item.addView(indicator);
-
             mPalette.addView(item);
         }
 

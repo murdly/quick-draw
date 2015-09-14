@@ -27,11 +27,13 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <include layout="@layout/top_tools"
+        <LinearLayout
+            android:id="@+id/toolkit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0" />
+            android:layout_weight="0"
+            android:orientation="horizontal"/>
 
 
         <com.example.arkadiuszkarbowy.paint.CanvasView

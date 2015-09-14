@@ -65,7 +65,7 @@ public class CanvasView extends View {
         canvas.drawPath(mPath, mDrawPaint);
     }
 
-    public void onLoadedImageFromStorage(Bitmap bitmap) {
+    public void onReloadedBitmap(Bitmap bitmap) {
         mCanvasBitmap = bitmap;
         mCanvas = new Canvas(mCanvasBitmap);
         invalidate();
