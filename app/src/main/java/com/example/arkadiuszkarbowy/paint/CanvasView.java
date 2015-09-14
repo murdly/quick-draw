@@ -19,12 +19,7 @@ import java.util.Queue;
  * Created by arkadiuszkarbowy on 09/09/15.
  */
 public class CanvasView extends View {
-
     private static final int DEFAULT_COLOR = 0xFF000000;
-    public static final int ERASER_COLOR = 0xFFFFFFFF;
-    public static final int ERASER_STROKE_WIDTH = 80;
-    public static final int PENCIL_STROKE_WIDTH = 2;
-    public static final int BRUSH_STROKE_WIDTH = 30;
 
     private Path mPath;
     private Paint mDrawPaint, mCanvasPaint;

@@ -1,7 +1,6 @@
 package com.example.arkadiuszkarbowy.paint;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -22,16 +21,16 @@ public class Toolkit {
     private ArrayList<Tool> mTools;
     private Tool mCurrentTool;
     private LinearLayout mContainer;
-    private OnSetToolListener mCallback;
+    private OnToolSetListener mCallback;
 
-    public Toolkit(Context context, LinearLayout container, OnSetToolListener listener) {
+    public Toolkit(Context context, LinearLayout container, OnToolSetListener listener) {
         mContext = context;
         mContainer = container;
         mTools = new ArrayList<>();
         mCallback = listener;
     }
 
-     void init() {
+    void init() {
         mTools.add(new Pencil());
         mTools.add(new Brush());
         mTools.add(new Fill());
@@ -43,8 +42,8 @@ public class Toolkit {
         inflateLayout();
     }
 
-    private void inflateLayout(){
-        for(Tool t: mTools)
+    private void inflateLayout() {
+        for (Tool t : mTools)
             mContainer.addView(t.mBtn);
     }
 
@@ -52,7 +51,7 @@ public class Toolkit {
         return mCurrentTool;
     }
 
-    public interface OnSetToolListener {
+    public interface OnToolSetListener {
         void draw(boolean fillMode);
 
         void clear();
@@ -61,7 +60,6 @@ public class Toolkit {
     private class Pencil extends Tool {
 
         public Pencil() {
-            mTag = "PENCIL";
             mStrokeWidth = PENCIL_STROKE_WIDTH;
             mBtn = new ImageButton(mContext);
             mBtn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -72,7 +70,6 @@ public class Toolkit {
 
         @Override
         public void onClick(View v) {
-            Log.d("Toolkit", mTag + "clicked " + v.getId());
             mCurrentTool.resetColor();
             mCurrentTool = this;
             mCallback.draw(false);
@@ -82,7 +79,6 @@ public class Toolkit {
     private class Brush extends Tool {
 
         public Brush() {
-            mTag = "BRUSH";
             mStrokeWidth = BRUSH_STROKE_WIDTH;
             mBtn = new ImageButton(mContext);
             mBtn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -93,7 +89,6 @@ public class Toolkit {
 
         @Override
         public void onClick(View v) {
-            Log.d("Toolkit", mTag + "clicked " + v.getId());
             mCurrentTool.resetColor();
             mCurrentTool = this;
             mCallback.draw(false);
@@ -102,7 +97,6 @@ public class Toolkit {
 
     private class Fill extends Tool {
         public Fill() {
-            mTag = Tool.FILL;
             mBtn = new ImageButton(mContext);
             mBtn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -112,7 +106,6 @@ public class Toolkit {
 
         @Override
         public void onClick(View v) {
-            Log.d("Toolkit", mTag + "clicked " + v.getId());
             mCurrentTool.resetColor();
             mCurrentTool = this;
             mCallback.draw(true);
@@ -123,7 +116,6 @@ public class Toolkit {
         private int colorFilter, paintColor;
 
         public Eraser() {
-            mTag = "ERASER";
             mStrokeWidth = ERASER_STROKE_WIDTH;
             colorFilter = mContext.getResources().getColor(R.color.colorAccent);
             paintColor = ERASER_COLOR;
@@ -143,7 +135,6 @@ public class Toolkit {
 
         @Override
         public void onClick(View v) {
-            Log.d("Toolkit", mTag + "clicked " + v.getId());
             mCurrentTool.resetColor();
             mCurrentTool = this;
             mCallback.draw(false);
@@ -152,7 +143,6 @@ public class Toolkit {
 
     private class Clear extends Tool {
         public Clear() {
-            mTag = Tool.CLEAR;
             mBtn = new ImageButton(mContext);
             mBtn.setColorFilter(DEFAULT_COLOR);
             mBtn.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -163,9 +153,7 @@ public class Toolkit {
 
         @Override
         public void onClick(View v) {
-            Log.d("Toolkit", mTag + "clicked " + v.getId());
             mCallback.clear();
         }
     }
 }
-

@@ -26,10 +26,13 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <include layout="@layout/top_tools"
+        <LinearLayout
+            android:id="@+id/toolkit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"/>
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0"
+            android:orientation="vertical"/>
 
         <com.example.arkadiuszkarbowy.paint.CanvasView
             android:id="@+id/canvas"
@@ -50,6 +53,7 @@
                 android:id="@+id/bottom_tools"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="vertical">
             </LinearLayout>
         </ScrollView>

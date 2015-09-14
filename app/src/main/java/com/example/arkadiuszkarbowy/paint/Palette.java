@@ -30,25 +30,6 @@ public class Palette extends View {
         return (int) mCurrentColor.getTag();
     }
 
-    public int getCurrentColorId(){
-        return mCurrentColor.getId();
-    }
-
-    public void setColorAsCurrent(int id){
-        ImageButton btn = findColorById(id);
-        if(btn != null) btn.performClick();
-
-    }
-
-    public ImageButton findColorById(int id){
-        for(int i = 0; i < mPalette.getChildCount(); i++){
-            ViewGroup container = (ViewGroup) mPalette.getChildAt(i);
-            View btn = container.getChildAt(0);
-            if(btn.getId() == id) return (ImageButton) btn;
-        }
-        return null;
-    }
-
     public interface OnColorChosenListener {
         void updateToolColor(int color);
     }
@@ -70,15 +51,6 @@ public class Palette extends View {
         ViewGroup container = (ViewGroup) color.getParent();
         View indicator = container.getChildAt(1);
         indicator.setVisibility(value);
-    }
-
-
-    public void setAvailable(boolean available){
-        for(int i = 0; i < mPalette.getChildCount(); i++){
-            ViewGroup container = (ViewGroup) mPalette.getChildAt(i);
-            View btn = container.getChildAt(0);
-            btn.setEnabled(available);
-        }
     }
 
     private void init() {

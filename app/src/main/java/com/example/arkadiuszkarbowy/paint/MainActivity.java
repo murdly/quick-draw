@@ -12,16 +12,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class MainActivity extends AppCompatActivity implements Palette.OnColorChosenListener, Toolkit.OnSetToolListener {
+public class MainActivity extends AppCompatActivity implements Palette.OnColorChosenListener, Toolkit.OnToolSetListener {
     private static final int SELECT_FILE = 0;
     private static final String STORAGE_TYPE = "resource/folder";
     private static final String IMAGE_STORAGE_PATH = "/paint/";
@@ -40,10 +38,6 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
         setUpToolbar();
         initTools();
         createStorageFolder();
-
-//        if(savedInstanceState == null) {
-//            mPencil.performClick();
-//        }
     }
 
     private void setUpToolbar() {
@@ -65,38 +59,6 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
 
         mToolkit = new Toolkit(this, (LinearLayout) findViewById(R.id.toolkit), this);
         mToolkit.init();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        outState.putInt("id", mCurrentTool.getId());
-//        outState.putInt("idp", mPalette.getCurrentColorId());
-//
-//
-//        /*zapisac temp w pliku :> a potem nadpisac*/
-//        mCanvasView.setDrawingCacheEnabled(true);
-//        mCanvasView.buildDrawingCache();
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        mCanvasView.getDrawingCache().compress(Bitmap.CompressFormat.PNG, 100, stream);
-//        byte[] byteArray = stream.toByteArray();
-//        mCanvasView.setDrawingCacheEnabled(false);
-//
-//        outState.putByteArray("canv", byteArray);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-//        findViewById(savedInstanceState.getInt("id")).performClick();
-//        mPalette.setColorAsCurrent(savedInstanceState.getInt("idp"));
-//
-//        byte[] bitmapbytes = savedInstanceState.getByteArray("canv");
-//        Bitmap b = BitmapFactory.decodeByteArray(bitmapbytes, 0, bitmapbytes.length);
-//
-//        Bitmap drawableBitmap = b.copy(Bitmap.Config.ARGB_8888, true);
-//        mCanvasView.onReloadedBitmap(drawableBitmap);
-//        Log.d("onRestoreInstanceState", " " +  savedInstanceState.getInt("idp"));
     }
 
     private void createStorageFolder() {
@@ -198,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
                 if (resultCode == RESULT_OK) {
                     String path = getPathFromURI(data.getData());
                     loadImageFromStorage(path);
-                    setTitleFrom(path);
+                    setToolbarTitleFrom(path);
                 }
                 break;
         }
@@ -219,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
         mCanvasView.onReloadedBitmap(drawableBitmap);
     }
 
-    private void setTitleFrom(String path) {
+    private void setToolbarTitleFrom(String path) {
         String title = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
         mTitle.setText(title);
     }
