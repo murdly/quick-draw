@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
         mTitle.setSelection(mTitle.getText().length());
     }
 
+    /*
+    * CR
+    * Zarówno paleta jak i toolkit powinny być dodane w layoutcie jako widoki
+    * */
     private void initTools() {
         mCanvasView = (CanvasView) findViewById(R.id.canvas);
         LinearLayout container = (LinearLayout) findViewById(R.id.bottom_tools);
@@ -132,19 +136,29 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
         mCanvasView.setDrawingCacheEnabled(false);
     }
 
+    /*
+    * CR
+    * Generalnie takie rzeczy można robić w innych klasach, nie będących widokami
+    * */
+
     private void save(Bitmap bitmapImage) {
         String filename = mTitle.getText().toString();
         File path = new File(Environment.getExternalStorageDirectory(),
                 IMAGE_STORAGE_PATH + filename + IMAGE_TYPE);
 
         if (!path.exists()) {
-            try {
+             try {
                 FileOutputStream fos = new FileOutputStream(path);
                 bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
                 fos.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            /*
+            * CR
+            * Jeśli wystąpił wyjątek to powinniśmy pokazać inny komunikat
+            * */
 
             Toast.makeText(this, getString(R.string.msg_saved) + " " + filename,
                     Toast.LENGTH_SHORT).show();
@@ -175,6 +189,10 @@ public class MainActivity extends AppCompatActivity implements Palette.OnColorCh
         return cursor.getString(column_index);
     }
 
+    /*
+    * CR
+    * Ładowanie obrazków należy robić w oddzielnym wątku bo zazwyczaj taka opracja trwa kilka sekund
+    * */
     private void loadImageFromStorage(String path) {
         Bitmap loadedBitmap = BitmapFactory.decodeFile(path);
         Bitmap drawableBitmap = loadedBitmap.copy(Bitmap.Config.ARGB_8888, true);

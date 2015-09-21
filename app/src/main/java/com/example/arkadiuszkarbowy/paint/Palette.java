@@ -13,6 +13,11 @@ import android.widget.LinearLayout;
  */
 public class Palette extends View {
 
+    /*
+    * CR
+    * Ta klasa powinna być dodawana jako widok do layoutu skoro jest widokiem.
+    * */
+
     private Context mContext;
     private ImageButton mCurrentColor;
     private OnColorChosenListener mCallback;
@@ -47,12 +52,20 @@ public class Palette extends View {
         }
     };
 
+    /*
+    * CR
+    * Nie powinno się w ten sposób odwoływać do dzieci. Wystarczy mała zmiana w layotcie i wszystko może się posypać.
+    * */
     private void setIndicators(View color, int value) {
         ViewGroup container = (ViewGroup) color.getParent();
         View indicator = container.getChildAt(1);
         indicator.setVisibility(value);
     }
 
+    /*
+    * CR
+    * Te buttony mogły być oddzielną klasą dziedziczącą po ImageView
+    * */
     private void init() {
         int[] colors = getResources().getIntArray(R.array.colors);
 

@@ -57,6 +57,12 @@ public class Toolkit {
         void clear();
     }
 
+    /*
+    * CR
+    * W tych klasach można ujednolicić tworzenie tego buttonu
+    * Najelpiej chyba przenieść to do głownej klasy a w dziedziczących pobierać tylko id dla ikony
+    * Metoda onClick również może być tam zaimplementowana a w klassach dziedziczących czy ma być true czy false dla callbacku*/
+
     private class Pencil extends Tool {
 
         public Pencil() {
