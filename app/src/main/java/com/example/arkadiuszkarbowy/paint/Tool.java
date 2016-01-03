@@ -10,7 +10,6 @@ public abstract class Tool implements ImageButton.OnClickListener {
     public int mPaintColor;
     public ImageButton mBtn;
     public int mStrokeWidth = -1;
-    public String mTag;
 
     public void resetColor() {
         mBtn.setColorFilter(null);

@@ -22,4 +22,5 @@
     <string name="msg_saved">Zapisano plik</string>
     <string name="msg_choose">Wybierz obraz</string>
     <string name="msg_manager">Potrzebujesz menadżera plików</string>
+    <string name="msg_error">Niepowodzenie</string>
 </resources>
